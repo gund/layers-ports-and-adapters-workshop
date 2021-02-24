@@ -1,13 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
-namespace MeetupOrganizing\Controller;
+namespace MeetupOrganizing\Infrastructure\Controller;
 
 use Assert\Assert;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
-use MeetupOrganizing\Entity\Rsvp;
-use MeetupOrganizing\Entity\RsvpRepository;
+use MeetupOrganizing\Domain\Entity\Rsvp;
+use MeetupOrganizing\Domain\Entity\RsvpRepository;
 use MeetupOrganizing\Session;
 use PDO;
 use Psr\Http\Message\ResponseInterface;

@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace MeetupOrganizing\Controller;
+namespace MeetupOrganizing\Infrastructure\Controller;
 
 use Assert\Assert;
 use Doctrine\DBAL\Connection;

@@ -1,7 +1,8 @@
 <?php
-declare(strict_types = 1);
 
-namespace MeetupOrganizing\Entity;
+declare(strict_types=1);
+
+namespace MeetupOrganizing\Domain\Entity;
 
 use Assert\Assertion;
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MeetupOrganizing;
@@ -36,7 +37,7 @@ final class SchemaManager
         $schema = new Schema();
 
         $meetupsTable = $schema->createTable('meetups');
-        $meetupsTable->addColumn('meetupId', 'integer', ['autoincrement' => true]);
+        $meetupsTable->addColumn('meetupId', 'string');
         $meetupsTable->addColumn('organizerId', 'integer');
         $meetupsTable->addColumn('name', 'string');
         $meetupsTable->addColumn('description', 'string');

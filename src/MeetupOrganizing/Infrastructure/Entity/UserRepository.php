@@ -1,11 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
-namespace MeetupOrganizing\Entity;
+namespace MeetupOrganizing\Infrastructure\Entity;
 
+use MeetupOrganizing\Domain\Entity\User;
+use MeetupOrganizing\Domain\Entity\UserId;
+use MeetupOrganizing\Domain\Entity\UserRepository as EntityUserRepository;
 use RuntimeException;
 
-final class UserRepository
+final class UserRepository implements EntityUserRepository
 {
     private const ORGANIZER_ID = 1;
     private const REGULAR_USER_ID = 2;
@@ -42,7 +46,8 @@ final class UserRepository
             function (array $record) {
                 return User::fromDatabaseRecord($record);
             },
-            $this->records);
+            $this->records
+        );
     }
 
     public function getOrganizerId(): UserId
