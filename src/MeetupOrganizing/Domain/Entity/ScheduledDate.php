@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace MeetupOrganizing\Entity;
+namespace MeetupOrganizing\Domain\Entity;
 
 use Assert\Assert;
 use DateTimeImmutable;

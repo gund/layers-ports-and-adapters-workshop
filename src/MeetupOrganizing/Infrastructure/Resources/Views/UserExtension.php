@@ -1,9 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
-namespace MeetupOrganizing\Resources\Views;
+namespace MeetupOrganizing\Infrastructure\Resources\Views;
 
-use MeetupOrganizing\Entity\UserRepository;
+use MeetupOrganizing\Domain\Entity\UserRepository;
 use MeetupOrganizing\Session;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;

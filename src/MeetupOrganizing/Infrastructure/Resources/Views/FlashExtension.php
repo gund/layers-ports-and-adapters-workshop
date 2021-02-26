@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace MeetupOrganizing\Resources\Views;
+namespace MeetupOrganizing\Infrastructure\Resources\Views;
 
 use MeetupOrganizing\Session;
 use Twig\Extension\AbstractExtension;

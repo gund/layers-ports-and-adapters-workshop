@@ -1,15 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
-namespace MeetupOrganizing\Controller;
+namespace MeetupOrganizing\Infrastructure\Controller;
 
 use Assert\Assert;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
-use MeetupOrganizing\Entity\Rsvp;
-use MeetupOrganizing\Entity\RsvpRepository;
-use MeetupOrganizing\Entity\UserId;
-use MeetupOrganizing\Entity\UserRepository;
+use MeetupOrganizing\Domain\Entity\Rsvp;
+use MeetupOrganizing\Domain\Entity\RsvpRepository;
+use MeetupOrganizing\Domain\Entity\UserId;
+use MeetupOrganizing\Domain\Entity\UserRepository;
 use PDO;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -75,7 +76,9 @@ final class MeetupDetailsController
                     'meetup' => $meetup,
                     'organizer' => $organizer,
                     'attendees' => $users
-                ]));
+                ]
+            )
+        );
 
         return $response;
     }

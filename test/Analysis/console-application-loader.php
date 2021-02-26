@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-use MeetupOrganizing\Command\ConsoleApplication;
+use MeetupOrganizing\Infrastructure\Command\ConsoleApplication;
 use MeetupOrganizing\ServiceContainer;
 
 return new ConsoleApplication(

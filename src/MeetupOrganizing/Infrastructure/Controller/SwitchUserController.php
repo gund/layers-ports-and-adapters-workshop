@@ -1,12 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
-namespace MeetupOrganizing\Controller;
+namespace MeetupOrganizing\Infrastructure\Controller;
 
 use Assert\Assert;
-use MeetupOrganizing\Entity\UserId;
+use MeetupOrganizing\Domain\Entity\UserId;
 use RuntimeException;
-use MeetupOrganizing\Entity\UserRepository;
+use MeetupOrganizing\Domain\Entity\UserRepository;
 use MeetupOrganizing\Session;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

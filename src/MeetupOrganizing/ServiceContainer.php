@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MeetupOrganizing;
@@ -6,19 +7,26 @@ namespace MeetupOrganizing;
 use Assert\Assert;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use MeetupOrganizing\Command\ConsoleApplication;
-use MeetupOrganizing\Command\ScheduleMeetupCommand;
-use MeetupOrganizing\Controller\CancelMeetupController;
-use MeetupOrganizing\Controller\ListMeetupsController;
-use MeetupOrganizing\Controller\MeetupDetailsController;
-use MeetupOrganizing\Controller\RsvpForMeetupController;
-use MeetupOrganizing\Controller\ScheduleMeetupController;
-use MeetupOrganizing\Controller\SwitchUserController;
-use MeetupOrganizing\Entity\RsvpRepository;
-use MeetupOrganizing\Entity\UserRepository;
-use MeetupOrganizing\Resources\Views\FlashExtension;
-use MeetupOrganizing\Resources\Views\TwigTemplates;
-use MeetupOrganizing\Resources\Views\UserExtension;
+use MeetupOrganizing\Infrastructure\Command\ConsoleApplication;
+use MeetupOrganizing\Infrastructure\Command\ScheduleMeetupCommand;
+use MeetupOrganizing\Infrastructure\Controller\CancelMeetupController;
+use MeetupOrganizing\Infrastructure\Controller\ListMeetupsController;
+use MeetupOrganizing\Infrastructure\Controller\MeetupDetailsController;
+use MeetupOrganizing\Infrastructure\Controller\RsvpForMeetupController;
+use MeetupOrganizing\Infrastructure\Controller\ScheduleMeetupController;
+use MeetupOrganizing\Infrastructure\Controller\SwitchUserController;
+use MeetupOrganizing\Domain\Entity\ListMeetupsRepository;
+use MeetupOrganizing\Domain\Entity\MeetupRepository;
+use MeetupOrganizing\Domain\Entity\RsvpRepository;
+use MeetupOrganizing\Domain\Entity\UserRepository;
+use MeetupOrganizing\Infrastructure\Resources\Views\FlashExtension;
+use MeetupOrganizing\Infrastructure\Resources\Views\TwigTemplates;
+use MeetupOrganizing\Infrastructure\Resources\Views\UserExtension;
+use MeetupOrganizing\Application\UseCase\MeetupUseCase;
+use MeetupOrganizing\Infrastructure\Entity\ListMeetupsRepository as ListMeetupsRepositoryImpl;
+use MeetupOrganizing\Infrastructure\Entity\MeetupRepository as MeetupRepositoryImpl;
+use MeetupOrganizing\Infrastructure\Entity\RsvpRepository as RsvpRepositoryImpl;
+use MeetupOrganizing\Infrastructure\Entity\UserRepository as UserRepositoryImpl;
 use Psr\Http\Message\RequestInterface;
 use Symfony\Component\ErrorHandler\Debug;
 use Xtreamwayz\Pimple\Container;
@@ -172,11 +180,26 @@ final class ServiceContainer extends Container
         };
 
         $this[UserRepository::class] = function () {
-            return new UserRepository();
+            return new UserRepositoryImpl();
         };
         $this[RsvpRepository::class] = function () {
-            return new RsvpRepository(
+            return new RsvpRepositoryImpl(
                 $this[Connection::class]
+            );
+        };
+        $this[MeetupRepository::class] = function () {
+            return new MeetupRepositoryImpl(
+                $this[Connection::class]
+            );
+        };
+        $this[ListMeetupsRepository::class] = function () {
+            return new ListMeetupsRepositoryImpl(
+                $this[Connection::class]
+            );
+        };
+        $this[MeetupUseCase::class] = function () {
+            return new MeetupUseCase(
+                $this[MeetupRepository::class]
             );
         };
 
@@ -194,7 +217,7 @@ final class ServiceContainer extends Container
                 $this[Session::class],
                 $this[TemplateRendererInterface::class],
                 $this[RouterInterface::class],
-                $this[Connection::class]
+                $this[MeetupUseCase::class],
             );
         };
         $this[CancelMeetupController::class] = function () {
@@ -206,7 +229,7 @@ final class ServiceContainer extends Container
         };
         $this[ListMeetupsController::class] = function () {
             return new ListMeetupsController(
-                $this[Connection::class],
+                $this[ListMeetupsRepository::class],
                 $this[TemplateRendererInterface::class]
             );
         };
@@ -241,7 +264,7 @@ final class ServiceContainer extends Container
         };
 
         $this[ScheduleMeetupCommand::class] = function () {
-            return new ScheduleMeetupCommand($this[Connection::class]);
+            return new ScheduleMeetupCommand($this[MeetupUseCase::class]);
         };
 
         $this->bootstrap();

@@ -1,14 +1,17 @@
 <?php
+
 declare(strict_types=1);
 
-namespace MeetupOrganizing\Entity;
+namespace MeetupOrganizing\Infrastructure\Entity;
 
 use Assert\Assert;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
+use MeetupOrganizing\Domain\Entity\Rsvp;
+use MeetupOrganizing\Domain\Entity\RsvpRepository as EntityRsvpRepository;
 use PDO;
 
-final class RsvpRepository
+final class RsvpRepository implements EntityRsvpRepository
 {
     private Connection $connection;
 

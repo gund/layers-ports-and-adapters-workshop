@@ -1,24 +1,27 @@
 <?php
+
 declare(strict_types=1);
 
-namespace MeetupOrganizing\Command;
+namespace MeetupOrganizing\Infrastructure\Command;
 
 use Assert\Assert;
-use Doctrine\DBAL\Connection;
+use MeetupOrganizing\Application\UseCase\MeetupUseCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use MeetupOrganizing\Application\UseCase\ScheduleMeetupCommand as ScheduleMeetupCommandUseCase;
 
 final class ScheduleMeetupCommand extends Command
 {
-    private Connection $connection;
+    private MeetupUseCase $meetupUseCase;
 
-    public function __construct(Connection $connection)
-    {
+    public function __construct(
+        MeetupUseCase $meetupUseCase
+    ) {
         parent::__construct();
 
-        $this->connection = $connection;
+        $this->meetupUseCase = $meetupUseCase;
     }
 
     protected function configure(): void
@@ -47,14 +50,25 @@ final class ScheduleMeetupCommand extends Command
         $scheduledFor = $input->getArgument('scheduledFor');
         Assert::that($scheduledFor)->string();
 
-        $record = [
-            'organizerId' => (int)$organizerId,
-            'name' => $name,
-            'description' => $description,
-            'scheduledFor' => $scheduledFor
-        ];
+        // $record = [
+        //     'organizerId' => (int)$organizerId,
+        //     'name' => $name,
+        //     'description' => $description,
+        //     'scheduledFor' => $scheduledFor
+        // ];
 
-        $this->connection->insert('meetups', $record);
+        // $this->connection->insert('meetups', $record);
+
+        $scheduleMeetupCommand = new ScheduleMeetupCommandUseCase(
+            (int)$organizerId,
+            $name,
+            $description,
+            $scheduledFor
+        );
+
+        $this->meetupUseCase->schedule(
+            $scheduleMeetupCommand
+        );
 
         $output->writeln('<info>Scheduled the meetup successfully</info>');
 
